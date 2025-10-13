@@ -1,10 +1,3 @@
-//
-//
-//After raw output ako na po magffix ng mga possible errors - Angelito
-// meron na pong token for return and view book list - Angelito
-// ayos na yung sa bounce back di na magsasave sa text fileg65   xws 3kv
-
-
 #include <iostream>
 #include <fstream>
 #include <string>
