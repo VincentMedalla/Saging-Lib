@@ -5,6 +5,8 @@
 #include <fstream>
 using namespace std;
 
+
+// hello nya -Adam
 string temp;
 int main() {
     string usr, pswrd, search;
