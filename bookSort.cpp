@@ -239,7 +239,7 @@ return;
         
 
 void checkBook();
-      int main () {
+int main () {
     int choice;
    
     while (true) {
@@ -278,8 +278,7 @@ void checkBook();
     return 0;
 }
 
-void checkBook(){
-    
+void checkBook(){     
     string usrSearch, lcTitle, lcAuthor;
     string id, title, author, date, status;
     bool searchStatus=false;
@@ -307,8 +306,7 @@ void checkBook(){
         transform(lcTitle.begin(),lcTitle.end(),lcTitle.begin(),::tolower);
         transform(lcAuthor.begin(),lcAuthor.end(),lcAuthor.begin(),::tolower); //turn title and author to lowercase
 
-        for(int i = 0;i+1<usrSearch.length();i++){
-            cout<<usrSearch[i]<<" and "<<lcTitle[i]<<endl;
+        for(int i = 0;i<usrSearch.length();i++){
             if(usrSearch[i] == lcTitle[i] || usrSearch[i] == lcAuthor[i]){
                 searchStatus = true;
             }
