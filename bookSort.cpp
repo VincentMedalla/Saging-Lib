@@ -268,10 +268,10 @@ int main () {
         break;
         case 7: checkBook();
         break;
-        case 8: cout << "Thank you for choosing SAGING Library sytem!" 
-<< endl;
+        case 8: cout << "Thank you for choosing SAGING Library sytem!" << endl;
+		return 0;
 	  default: cout<<"Invalid input";
-        return 0;
+        return 1;
 
         }
     }
