@@ -241,7 +241,8 @@ return;
 void checkBook();
 int main () {
     int choice;
-   
+	cout<<"Group:"<<right<<setw(9)<<"Saging"<<endl<<right<<setw(39)<<"Members: Barrameda, Angelito Parale Jr."<<endl<<right<<setw(32)<<"Fetalvero, Cedric Wayne"<<endl<<right<<setw(32)<<"De Villa, Kurt Lawrence"<<endl<<right<<setw(25)<<"Medalla, Vincent"<<endl;
+    cout<<"\nWelcome to Saging Library System"<<endl;
     while (true) {
     cout<<"Enter (1) if you want to add a book\n";
     cout<<"Enter (2) if you want to display the catalog\n";
