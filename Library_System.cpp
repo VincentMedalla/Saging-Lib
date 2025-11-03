@@ -739,10 +739,9 @@ bool fregister(){
     cout<<"\t\t\t Enter Preferred password : ";
     cin>>rpassword;
     cin.ignore();
-    cout << "Enter name: ";
+    cout << "\t\t\t Enter name: ";
     getline(cin, rname);
-    cin.ignore();
-    cout << "Enter LRN (up to 12 digits): ";
+    cout << "\t\t\t Enter LRN (up to 12 digits): ";
     getline(cin, rId);
 
     bool valid = true;
