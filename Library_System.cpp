@@ -14,10 +14,10 @@ using namespace std;
 void user();
 void faculty();
 void ulogin();
-void uregistration();
+bool uregistration();
 void uforgot();
 void flogin();
-void fregister();
+bool fregister();
 void fforgot();
 void menu();
 void addbook();
@@ -27,6 +27,8 @@ void borrow_book();
 void return_book();
 void view_borrowed();
 void searchBook();
+void umenu();
+void amenu();
 
 int main () {
     int c;
@@ -60,6 +62,7 @@ int main () {
 void user(){
     int c;
 
+    system("cls");
     cout<<"Welcome to the Login page\n";
     cout<<"Press (1) to LOGIN"<<endl;
     cout<<"Press (2) to REGISTER"<<endl;
@@ -81,13 +84,12 @@ void user(){
             break;
         case 4:
                 cout << "Thank you for choosing SAGING Library system!" << endl;
-                return;
+                exit(0);
             default:
                 system("cls");
                 cout << "\t\t\t Please select from the options given above \n" << endl;
     
     }
-    return;
 }
 
 void faculty(){
@@ -114,29 +116,70 @@ void faculty(){
             break;
         case 4:
                 cout << "Thank you for choosing SAGING Library system!" << endl;
-                return;
+                exit(0);
             default:
                 system("cls");
                 cout << "\t\t\t Please select from the options given above \n" << endl;
     
     }
-    return;
 }
 
-void menu(){
+void umenu(){
     int choice;
 
-    cout<<"\n\t\t\tWelcome to Saging Library System\t\t\t";
+    cout<<"\n\t\t\tWelcome to Saging Library System\t\t\t"<<endl;
     while (true) {
-    cout<<endl;
-    cout<<"Enter (1) if you want to add a book\n";
-    cout<<"Enter (2) if you want to display the catalog\n";
-    cout<<"Enter (3) if you want to delete a book\n";
-    cout<<"Enter (4) if you want to borrow a book\n";
-    cout<<"Enter (5) if you want to return a book\n";
-    cout<<"Enter (6) if you want to view your borrowed books\n";
-    cout<<"Enter (7) if you want to search for a book\n";
-    cout<<"Enter (8) if you want to exit the program\n";
+    cout<<"Enter (1) display the catalog\n";
+    cout<<"Enter (2) borrow a book\n";
+    cout<<"Enter (3) return a book\n";
+    cout<<"Enter (4) view your borrowed books\n";
+    cout<<"Enter (5) search for a book\n";
+    cout<<"Enter (6) if you want to exit the program\n";
+    cout<<"\t\t\tEnter your choice: ";
+   
+    if (cin >> choice) {
+            switch (choice) {
+                case 1: booklist();
+                    break;
+                case 2: borrow_book();
+                    break;
+                case 3: return_book();
+                    break;
+                case 4: view_borrowed();
+                    break;
+                case 5: searchBook();
+                    break;
+                case 6:
+                    system("cls");
+                    cout << "\t\t\t Thank you for choosing SAGING Library system!" << endl;
+                    exit(0);
+                default:
+                    system("cls"); 
+                    cout << "Invalid input. Please enter a number between 1 and 8." << endl;
+                    
+            }
+        } else {
+            cout << "Invalid input. Please enter a number between 1 and 6." << endl;
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        }
+    }
+};
+
+void amenu(){
+    int choice;
+
+    cout<<"\n\t\t\tWelcome to Saging Library System\t\t\t"<<endl;
+    cout<<"\n\t\t\tAdmin\t\t\t"<<endl;
+    while (true) {
+    cout<<"Enter (1) add a book\n";
+    cout<<"Enter (2) display the catalog\n";
+    cout<<"Enter (3) display student information\n";
+    cout<<"Enter (4) delete a book\n";
+    cout<<"Enter (5) to view as user\n";
+    cout<<"Enter (6) if you want to search for a book\n";
+    cout<<"Enter (7) if you want to exit the program\n";
+    cout<<"\t\t\tEnter your choice: ";
    
     if (cin >> choice) {
             switch (choice) {
@@ -144,21 +187,22 @@ void menu(){
                     break;
                 case 2: booklist();
                     break;
-                case 3: delete_book();
+                //case 3: student_info();
+                    // break;
+                case 4: delete_book();
                     break;
-                case 4: borrow_book();
+                case 5: umenu();
                     break;
-                case 5: return_book();
+                case 6: searchBook();
                     break;
-                case 6: view_borrowed();
-                    break;
-                case 7: searchBook();
-                    break;
-                case 8:
-                    cout << "Thank you for choosing SAGING Library system!" << endl;
-                    return;
-                default: cout << "Invalid input. Please enter a number between 1 and 8." << endl;
+                case 7:
+                    system("cls");
+                    cout << "\t\t\t Thank you for choosing SAGING Library system!" << endl;
                     exit(0);
+                default:
+                    system("cls"); 
+                    cout << "Invalid input. Please enter a number between 1 and 8." << endl;
+                    
             }
         } else {
             cout << "Invalid input. Please enter a number between 1 and 8." << endl;
@@ -474,32 +518,60 @@ void ulogin() {
     if (count == 1) {
         system("cls");
         cout << userID << "\n Your LOGIN is successful" << endl;
-        menu();
+        umenu();
     } else {
+        system("cls");
         cout << "\n LOGIN ERROR \n Please check your username and password \n";
+        ulogin();
     }
 };
 
-
-void uregistration(){
-    string ruserID,rpassword,rid,rpass;
+bool uregistration() {  // Changed to bool
+    string ruserID, rpassword, rid, rpass, rname, rclass_id;
+    int rschool_year;
     system("cls");
-    cout<<"\t\t\t Enter the username : ";
-    cin>>ruserID;
-    cout<<"\t\t\t Enter the password : ";
-    cin>>rpassword;
 
+    cout << "\t\t\t Enter preferred username : ";
+    cin >> ruserID;
+    cout << "\t\t\t Enter the password : ";
+    cin >> rpassword;
+    cout << "\t\t\tEnter name: ";
+    cin.ignore();  // Added to handle leftover input
+    getline(cin, rname);
+    cout << "\t\t\tEnter school year: ";
+    cin >> rschool_year;
+    cin.ignore();
+    cout << "\t\t\tEnter LRN (up to 12 digits): ";
+    getline(cin, rclass_id);
+    bool valid = true;
+    if (rclass_id.length() > 12 || rclass_id.empty()) {
+        valid = false;
+    } else {
+        for (char c : rclass_id) {
+            if (!isdigit(c)) {
+                valid = false;
+                break;
+            }
+        }
+    }
+    if (!valid) {
+        cout << "Invalid class ID. It must consist of up to 12 digits only." << endl;
+        return false;
+    }
+    
+    
     ofstream f1("record_student.txt", ios::app);
-    f1<<ruserID<<' '<<rpassword<<endl;
+    f1 << ruserID << ' ' << rpassword << ' ' << rname << ' ' << rschool_year << ' ' << rclass_id << endl;
     system("cls");
-    cout<<"\n\t\t\t Registration is successful! \n";
-    main();
-};
+    cout << "\n\t\t\t Registration is successful! \n";
+    user();  // Call user() instead of returning
+    return true;  // Now valid
+}
     
 void uforgot(){
     int option;
     system("cls");
-    cout<<"You forgot the password?";
+    cout<<"You forgot the password?"<<endl;
     cout<<"Press 1 to search your id by username"<<endl;
     cout<<"Press 2 to go back to the main menu"<<endl;
     cout<<"\t\t\t Enter your choice: ";
@@ -521,7 +593,7 @@ void uforgot(){
         f2.close();
         if(count==1){
             cout<<"\n\n Your account is found! \n";
-            cout<<"\n\n Your password is: "<<spass;
+            cout<<"\n\n Your password is: "<<spass<<endl;
             main();
         }else{
             cout<<"\n\tYour account is not found";
@@ -559,25 +631,50 @@ void flogin() {
     if (count == 1) {
         system("cls");
         cout << userID << "\n Your LOGIN is successful" << endl;
-        menu();
+        amenu();
     } else {
         cout << "\n LOGIN ERROR \n Please check your username and password \n";
     }
 };
 
-void fregister(){
-    string ruserID,rpassword,rid,rpass;
+bool fregister(){
+    string ruserID,rpassword,rid,rpass,rname,rId;
     system("cls");
-    cout<<"\t\t\t Enter the username : ";
+    cout<<"\t\t\t Enter Preferred username : ";
     cin>>ruserID;
-    cout<<"\t\t\t Enter the password : ";
+    cin.ignore();
+    cout<<"\t\t\t Enter Preferred password : ";
     cin>>rpassword;
+    cin.ignore();
+    cout << "Enter name: ";
+    getline(cin, rname);
+    cin.ignore();
+    cout << "Enter LRN (up to 12 digits): ";
+    getline(cin, rId);
+
+    bool valid = true;
+    if (rId.length() > 12 || rId.empty()) {
+        valid = false;
+    } else {
+        for (char c : rId) {
+            if (!isdigit(c)) {
+                valid = false;
+                break;
+            }
+        }
+    }
+    if (!valid) {
+        cout << "Invalid class ID. It must consist of up to 12 digits only." << endl;
+        return false;
+    }
 
     ofstream f1("record_staff.txt", ios::app);
     f1<<ruserID<<' '<<rpassword<<endl;
     system("cls");
     cout<<"\n\t\t\t Registration is successful! \n";
     main();
+
+    return true;
 };
 
 void fforgot(){
@@ -604,6 +701,7 @@ void fforgot(){
         }
         f2.close();
         if(count==1){
+            system("cls");
             cout<<"\n\n Your account is found! \n";
             cout<<"\n\n Your password is: "<<spass;
             main();
