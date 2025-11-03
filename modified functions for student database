@@ -63,7 +63,6 @@
     rename("Copy_library.txt", "library_file.txt");
     rename("Copy_borrow.txt", "borrowed_books.txt");
 
-    // Update student database
     ifstream sdb_in("student_database.txt");
     ofstream sdb_temp("student_database_temp.txt");
     string sid, name, strikes, fee;
