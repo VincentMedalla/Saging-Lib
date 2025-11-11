@@ -51,8 +51,6 @@ void searchBook();
 
 int main () {
     int c;
-
-    system("cls");
         cout << "*************************************\n";
         cout << "Welcome to the Login page\n";
         cout << "*************************************\n";
@@ -61,6 +59,7 @@ int main () {
         cout << "Press (3) to EXIT\n";
         cout << "*************************************\n";
         cout << "Please enter your choice: ";
+        cin >> c;
 
 
     switch(c){
@@ -853,7 +852,7 @@ void ulogin() {
     system("cls");
     cout << "Please enter username and password: " << endl;
     cout << "******************************************************";
-    cout << "USERNAME: ";
+    cout << "\nUSERNAME: ";
     cin >> userID;
     cout << "\nPASSWORD: ";
     cin >> password;
