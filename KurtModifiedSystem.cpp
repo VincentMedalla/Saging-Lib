@@ -98,6 +98,7 @@ void user() {
     cout<<endl;
         switch (c) {
             case 1:
+                system("cls)
                 ulogin();
                 return;
             case 2:
@@ -848,16 +849,17 @@ if (!found) {
 
 void ulogin() {
     int count = 0;
-    string userID, password, id, pass;
+    string userID, password, id, pass, ext, ext2, ext3;
     system("cls");
     cout << "Please enter username and password: " << endl;
-    cout << "******************************************************";
+    cout << "*************************************";
     cout << "\nUSERNAME: ";
     cin >> userID;
     cout << "\nPASSWORD: ";
     cin >> password;
     ifstream input("record_student.txt");
-    while (input >> id >> pass) {
+    while (input >> id >> pass >> ext >> ext2 >> ext3) {
+    	cout << "[" << id << "] [" << pass << "]" << endl;
         if (id == userID && pass == password) {
             count = 1;
             break;
@@ -865,15 +867,15 @@ void ulogin() {
     }
     input.close();
     if (count == 1) {
-        system("cls");
         cout << userID << "\n Your LOGIN is successful" << endl;
         umenu();
     } else {
         system("cls");
-        cout << "\n LOGIN ERROR \n Please check your username and password \n";
-        ulogin();  // Recurse for retry (consider loop for better UX)
+        cout << "\n LOGIN ERROR \n Please check your username and password \n\n";
+        ulogin();// Recurse for retry (consider loop for better UX)
     }
 }
+
 
 bool uregistration() {
     string ruserID, rpassword, rname, rclass_id;
