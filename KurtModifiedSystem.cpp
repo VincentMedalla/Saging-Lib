@@ -26,6 +26,7 @@ bool isNumeric(const string& str) {
     return true;
 }
 
+void view_missing_books();
 void user();
 void faculty();
 void ulogin();
@@ -98,9 +99,8 @@ void user() {
     cout<<endl;
         switch (c) {
             case 1:
-                system("cls)
+                system("cls");
                 ulogin();
-                return;
             case 2:
                 uregistration();
                 break;
@@ -200,49 +200,75 @@ void umenu(){
 void amenu(){
     int choice;
 
+	while (true) {
     cout<<"*****************************************************\n";
     cout<<"Welcome to BookTrack: Library Management System"<<endl;
     cout<<"*****************************************************\n";
     cout<<"Admin"<<endl;
-    while (true) {
     cout<<"Enter (1)  add a book\n";
     cout<<"Enter (2)  delete a book\n";
     cout<<"Enter (3)  display the catalog\n";
-    cout<<"Enter (4)  display student information\n";
-    cout<<"Enter (5)  display student database\n";
-    cout<<"Enter (6)  if you want to borrow a book\n";
-    cout<<"Enter (7)  if you want to return a book\n";
-    cout<<"Enter (8)  if you want to pay a student's fee\n";
-    cout<<"Enter (9)  to view as user\n";
-    cout<<"Enter (10) if you want to search for a book\n";
-    cout<<"Enter (11) if you want to exit the program\n";
+    cout<<"Enter (4)  display missing books\n";
+    cout<<"Enter (5)  display student information\n";
+    cout<<"Enter (6)  display student database\n";
+    cout<<"Enter (7)  if you want to borrow a book\n";
+    cout<<"Enter (8)  if you want to return a book\n";
+    cout<<"Enter (9)  if you want to pay a student's fee\n";
+    cout<<"Enter (10) to view as user\n";
+    cout<<"Enter (11) if you want to search for a book\n";
+    cout<<"Enter (12) if you want to exit the program\n";
        cout<<"*****************************************************\n";
     cout<<"Enter your choice: ";
    
     if (cin >> choice) {
             switch (choice) {
+     
                 case 1: addbook();
+				system("pause");
+                system("cls");
                     break;
                 case 2: delete_book();
+                system("pause");
+                system("cls");
                     break;
                 case 3: booklist();
+                system("pause");
+                system("cls");
                     break;
-                case 4: view_student_history();
+                case 4: view_missing_books();
+            	system("pause");
+                system("cls");
                     break;
-                case 5: view_student_database();
+                case 5: view_student_history();
+               	system("pause");
+                system("cls");
                     break;
-                case 6: borrow_book();
+                case 6: view_student_database();
+                system("pause");
+                system("cls");
                     break;
-                case 7: return_book();
+                case 7: borrow_book();
+               	system("pause");
+                system("cls");
                     break;
-                case 8: payfee();
+                case 8: return_book();
+                system("pause");
+                system("cls");
                     break;
-                case 9: umenu();
+                case 9: payfee();
+                system("pause");
+                system("cls");
                     break;
-                case 10: searchBook();
+                case 10: umenu();
+               	system("pause");
+                system("cls");
                     break;
-                case 11:
-                    system("cls");
+                case 11: searchBook();
+               	system("pause");	
+                system("cls");
+                    break;
+                case 12:
+                	system("cls");
                     cout << "Thank you for choosing SAGING Library system!" << endl;
                     exit(0);
                 default:
@@ -561,7 +587,6 @@ void borrow_book() {
     remove("library_file.txt");
     rename("temp_library.txt", "library_file.txt");
 }
-
 void return_book() {
     string studID, bookID, returnDate, condition, line;
     cin.ignore();
@@ -572,6 +597,7 @@ void return_book() {
         cout << "Student ID cannot be empty.\n";
         return;
     }
+
     cout << "Enter the book ID you want to return: ";
     getline(cin, bookID);
     bookID = trim(bookID);
@@ -579,6 +605,7 @@ void return_book() {
         cout << "Book ID cannot be empty.\n";
         return;
     }
+
     cout << "Enter return date (YYYY-MM-DD): ";
     getline(cin, returnDate);
     returnDate = trim(returnDate);
@@ -586,6 +613,7 @@ void return_book() {
         cout << "Return date cannot be empty.\n";
         return;
     }
+
     cout << "Condition (normal/damaged/missing/late): ";
     getline(cin, condition);
     condition = trim(condition);
@@ -593,21 +621,29 @@ void return_book() {
         cout << "Condition cannot be empty.\n";
         return;
     }
+
     int feeAdd = 0, strikeAdd = 0;
-    if (condition == "missing") { feeAdd = 1000; strikeAdd = 1; }
-    else if (condition == "damaged") { feeAdd = 200; strikeAdd = 1; }
-    else if (condition == "late") { feeAdd = 50; strikeAdd = 1; }
+    if (condition == "missing" || condition == "damaged" || condition == "late") {
+        strikeAdd = 1;
+        cout << "Enter the corresponding fee: ";
+        cin >> feeAdd;
+    }
+
     ifstream borrowFile("borrowed_books.txt");
     ifstream libraryFile("library_file.txt");
     if (!borrowFile || !libraryFile) {
         cout << "Error: Could not open required files.\n";
         return;
     }
+
     ofstream tempBorrow("temp_borrow.txt");
     ofstream tempLibrary("temp_library.txt");
+
     string histFile = studID + "_history.txt";
     ofstream studentHistory(histFile, ios::app);
+
     bool bookFound = false;
+
     while (getline(borrowFile, line)) {
         stringstream ss(line);
         string id;
@@ -619,6 +655,7 @@ void return_book() {
         }
     }
     borrowFile.close();
+
     while (getline(libraryFile, line)) {
         stringstream ss(line);
         string id, title, author, date, category, status;
@@ -628,21 +665,44 @@ void return_book() {
         getline(ss, date, ',');
         getline(ss, category, ',');
         getline(ss, status);
+
         if (trim(id) == bookID) {
-            tempLibrary << bookID << "," << title << "," << author << "," << date << "," << category << ",Available" << endl;
+            string newStatus = "Available";
+
+            // 🔹 If book is missing, mark status as "Missing" instead of "Available"
+            if (condition == "missing") {
+                newStatus = "Missing";
+            }
+
+            tempLibrary << bookID << "," << title << "," << author << "," << date << "," << category << "," << newStatus << endl;
             studentHistory << "Returned: " << title << " (" << bookID << ") on " << returnDate << " | Condition: " << condition << endl;
+
+            // 🔹 If missing, also log to missing_books.txt
+            if (condition == "missing") {
+                ofstream missingLog("missing_books.txt", ios::app);
+                if (missingLog) {
+                    missingLog << bookID << "," << title << "," << author << "," << date << "," << category
+                               << ",Missing,"
+                               << "Returned by Student: " << studID << " on " << returnDate << endl;
+                    missingLog.close();
+                }
+            }
+
         } else {
             tempLibrary << line << endl;
         }
     }
+
     libraryFile.close();
     tempBorrow.close();
     tempLibrary.close();
     studentHistory.close();
+
     remove("borrowed_books.txt");
     rename("temp_borrow.txt", "borrowed_books.txt");
     remove("library_file.txt");
     rename("temp_library.txt", "library_file.txt");
+
     if (bookFound) {
         ifstream studentDB("student_database.txt");
         ofstream tempStudentDB("temp_student_db.txt");
@@ -672,7 +732,6 @@ void return_book() {
         cout << "Book not found in borrowed list.\n";
     }
 }
-
 void view_student_database() {
     system("cls");
     cout << "------------------------------------------------------------------------------------------------------------------\n";
@@ -859,7 +918,6 @@ void ulogin() {
     cin >> password;
     ifstream input("record_student.txt");
     while (input >> id >> pass >> ext >> ext2 >> ext3) {
-    	cout << "[" << id << "] [" << pass << "]" << endl;
         if (id == userID && pass == password) {
             count = 1;
             break;
@@ -867,6 +925,7 @@ void ulogin() {
     }
     input.close();
     if (count == 1) {
+    	system("cls");
         cout << userID << "\n Your LOGIN is successful" << endl;
         umenu();
     } else {
@@ -958,18 +1017,67 @@ void uforgot() {
             uforgot();
     }
 }
+
+void view_missing_books() {
+    system("cls");
+    ifstream file("missing_books.txt");
+    if (!file) {
+        cout << "-----------------------------------------------\n";
+        cout << "No missing book records found.\n";
+        cout << "-----------------------------------------------\n";
+        system("pause");
+        return;
+    }
+
+    cout << "-------------------------------------------------------------------------------------------------------------\n";
+    cout << left << setw(10) << "ID"
+         << setw(25) << "Title"
+         << setw(20) << "Author"
+         << setw(15) << "Date"
+         << setw(15) << "Category"
+         << setw(12) << "Status"
+         << setw(30) << "Reported Info" << endl;
+    cout << "-------------------------------------------------------------------------------------------------------------\n";
+
+    string line;
+    while (getline(file, line)) {
+        stringstream ss(line);
+        string id, title, author, date, category, status, reportedInfo;
+
+        getline(ss, id, ',');
+        getline(ss, title, ',');
+        getline(ss, author, ',');
+        getline(ss, date, ',');
+        getline(ss, category, ',');
+        getline(ss, status, ',');
+        getline(ss, reportedInfo); // 
+
+        cout << left << setw(10) << id
+             << setw(25) << title
+             << setw(20) << author
+             << setw(15) << date
+             << setw(15) << category
+             << setw(12) << status
+             << setw(30) << reportedInfo << endl;
+    }
+
+    cout << "-------------------------------------------------------------------------------------------------------------\n";
+    file.close();
+    system("pause");
+}
+
 void flogin() {
     int count = 0;
     string userID, password, id, pass;
     system("cls");
-    cout << "Please enter username and password: " << endl;
-    cout << "******************************************************";
+    cout << "Please enter username and password: \n" << endl;
+    cout << "******************************************************\n";
     cout << "USERNAME: ";
     cin >> userID;
     cout << "PASSWORD: ";
     cin >> password;
     ifstream input("record_staff.txt");
-    while (input >> id >> pass) {
+    while (input >> id >> pass ) {
         if (id == userID && pass == password) {
             count = 1;
             break;
@@ -1086,4 +1194,3 @@ void payfee() {
     rename("student_database_temp.txt", "student_database.txt");
 
 }
-
